@@ -31,10 +31,16 @@ fi
 
 # It will be a nightmare to expand "$@" inside a shell -c argument.
 # Let's rather generate a string where we manually expand-and-quote the arguments
+
+# https://stackoverflow.com/questions/10748703/iterate-over-lines-instead-of-words-in-a-for-loop-of-shell-script
+OLDIFS="$IFS"
+IFS=$'\n' # bash specific
 env_string="/usr/bin/env -i "
 for envi in $(cat "$cron_env"); do
-   env_string="${env_string} $envi "
+   env_string="${env_string} \"$envi\" "
+   echo $env_string
 done
+IFS="$OLDIFS"
 
 cmd_string=""
 for arg in "$@"; do

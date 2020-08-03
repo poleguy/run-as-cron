@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# original source: https://unix.stackexchange.com/a/580656/316401
+
 # Run as if it was called from cron, that is to say:
 #  * with a modified environment
 #  * with a specific shell, which may or may not be bash

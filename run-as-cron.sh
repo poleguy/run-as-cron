@@ -16,21 +16,23 @@ if [ "$1" == "-h" -o "$1" == "--help" ]; then
     exit 0
 fi
 
-if [ $(whoami) != "root" ]; then
-    echo "Only root is supported at the moment"
-    exit 1
-fi
+#if [ $(whoami) != "root" ]; then
+#    echo "Only root is supported at the moment"
+#    exit 1
+#fi
 
 # This file should contain the cron environment.
-cron_env="/root/cron-env"
+cron_env="`echo ~/cron-env`"
 if [ ! -f "$cron_env" ]; then
     echo "Unable to find $cron_env"
-    echo "To generate it, run \"/usr/bin/env > /root/cron-env\" as a cron job"
+    echo "To generate it, run crontab -e and add \"* * * * * /usr/bin/env > ~/cron-env\" and wait a minute to generate it"
+    echo "then run crontab -e to remove the line"
     exit 0
 fi
 
 # It will be a nightmare to expand "$@" inside a shell -c argument.
 # Let's rather generate a string where we manually expand-and-quote the arguments
+
 
 # https://stackoverflow.com/questions/10748703/iterate-over-lines-instead-of-words-in-a-for-loop-of-shell-script
 OLDIFS="$IFS"
@@ -42,13 +44,14 @@ for envi in $(cat "$cron_env"); do
 done
 IFS="$OLDIFS"
 
+
 cmd_string=""
 for arg in "$@"; do
     cmd_string="${cmd_string} \"${arg}\" "
 done
 
 # Which shell should we use?
-the_shell=$(grep -E "^SHELL=" /root/cron-env | sed 's/SHELL=//')
+the_shell=$(grep -E "^SHELL=" ~/cron-env | sed 's/SHELL=//')
 echo "Running with $the_shell the following command: $cmd_string"
 
 

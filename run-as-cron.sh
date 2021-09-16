@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# shellcheck disable=SC2116,SC2013,SC2089,SC2090
 # original source: https://unix.stackexchange.com/a/580656/316401
 
 # Run as if it was called from cron, that is to say:
@@ -14,7 +14,7 @@ function usage(){
     echo "   $0 [command | script]"
 }
 
-if [ "$1" == "-h" -o "$1" == "--help" ]; then
+if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
     usage
     exit 0
 fi
@@ -25,7 +25,7 @@ fi
 #fi
 
 # This file should contain the cron environment.
-cron_env="`echo ~/cron-env`"
+cron_env="$(echo ~/cron-env)"
 if [ ! -f "$cron_env" ]; then
     echo "Unable to find $cron_env"
     echo "To generate it, run crontab -e and add \"* * * * * /usr/bin/env > ~/cron-env\" and wait a minute to generate it"
@@ -43,7 +43,7 @@ IFS=$'\n' # bash specific
 env_string="/usr/bin/env -i "
 for envi in $(cat "$cron_env"); do
    env_string="${env_string} \"$envi\" "
-   echo $env_string
+   echo "$env_string"
 done
 IFS="$OLDIFS"
 

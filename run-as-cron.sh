@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # original source: https://unix.stackexchange.com/a/580656/316401
+# Based on answer by Daladim
 
 # Run as if it was called from cron, that is to say:
 #  * with a modified environment
